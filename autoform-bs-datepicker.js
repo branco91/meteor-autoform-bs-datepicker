@@ -39,17 +39,19 @@ AutoForm.addInputType("bootstrap-datepicker", {
 Template.afBootstrapDatepicker.helpers({
   atts: function addFormControlAtts() {
     var atts = _.clone(this.atts);
-    // Add bootstrap class
-    atts = AutoForm.Utility.addClass(atts, "form-control");
+    if (atts.inline !== true) {
+      // Add bootstrap class
+      atts = AutoForm.Utility.addClass(atts, "form-control");
+    }
     delete atts.datePickerOptions;
     return atts;
   }
 });
 
 Template.afBootstrapDatepicker.rendered = function () {
-  var $input = this.data.atts.buttonClasses ? this.$('.input-group.date') : this.$('input');
-  var data = this.data;
 
+  var $input = fetchElement(this.data.atts.inline, this.data.atts.buttonClasses)
+  var data = this.data;
   // instanciate datepicker
   $input.datepicker(data.atts.datePickerOptions);
 
@@ -83,9 +85,20 @@ Template.afBootstrapDatepicker.rendered = function () {
 };
 
 Template.afBootstrapDatepicker.destroyed = function () {
-  var $input = this.data.atts.buttonClasses ? this.$('.input-group.date') : this.$('input');
+  var $input = fetchElement(this.data.atts.inline, this.data.atts.buttonClasses)
   $input.datepicker('remove');
 };
+
+function fetchElement(inline, buttonClasses) {
+  var element;
+  if (inline === true) {
+    element = this.$(".datepicker-inline");
+    return element;
+  }
+  buttonClasses ? element = this.$('.input-group.date') : element = this.$('input');
+  return element;
+
+}
 
 function utcToLocal(utcDate) {
   var localDateObj = new Date();

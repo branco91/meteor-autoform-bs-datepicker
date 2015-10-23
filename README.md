@@ -49,6 +49,9 @@ Or on the `afFieldInput` component or any component that passes along attributes
 
 {{> afFieldInput name="typeTest" type="bootstrap-datepicker"}}
 ```
+For inline Datepicker simply add the attribute "inline" as follows:
+{{> afFieldInput name="typeTest" type="bootstrap-datepicker" inline=true}}
+
 
 ## Automatic Type Conversions
 
